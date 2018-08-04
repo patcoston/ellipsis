@@ -7,28 +7,67 @@ $(document).ready(function() {
     var words = lipsum.split(' ');
     var len = words.length;
     var half = parseInt(len / 2);
-    var $div = $('div');
+    var $content = $('div.content');
+    var $hidden = $('div.hidden');
     var fonts = ['"Times New Roman", Times, serif', 'Arial, Helvetica, sans-serif', '"Comic Sans MS", cursive, sans-serif', 'Impact, Charcoal, sans-serif', '"Courier New", Courier, monospace'];
-    $div.each(function() {
+    $content.each(function() {
         var $this = $(this);
-        var w = rand(100, 500);
+        var w = rand(200, 500);
         var h = rand(100, 500);
         var fs = rand(5, 50) + 'px';
         var font = rand(0, 4);
         var fontName = fonts[font];
-        console.log(font, fontName);
+        /*
+        w = 200; // DEBUG
+        h = 550; // DEBUG
+        fs = '40px'; // DEBUG
+        fontName = 'Impact, Charcoal, sans-serif'; // DEBUG
+        */
         $this.width(w);
         $this.height(h);
         $this.css({'font-size': fs});
         $this.css({'font-family': fontName});
     });
-    $div.each(function() {
+    $content.each(function() {
         var $this = $(this);
-        var h = $this.height();
-        var start = rand(0, half-5);
+        var initWidth = $this.innerWidth();
+        var initHeight = $this.innerHeight();
+        var fontSize = $this.css('font-size');
+        var fontFamily = $this.css('font-family');
+        var start = rand(0, half - 5);
         var end = rand(half + 5, len - 1);
+        /*
+        start = 0; // DEBUG
+        end = len - 1; // DEBUG
+        */
         var sub = words.slice(start, end);
         var text = sub.join(' ');
-        $this.text(text);
+        var min = 0;
+        var max = sub.length - 1;
+        $hidden.innerWidth(initWidth);
+        $hidden.css({'font-size': fontSize});
+        $hidden.css({'font-family': fontFamily});
+        var ellipsis = false;
+        while (min <= max) {
+            var mid = (min + max) >> 1;
+            var subSub = sub.slice(0, mid);
+            var subText = subSub.join(' ') + ' ...';
+            $hidden.text(subText);
+            var newHeight = $hidden.innerHeight();
+            console.log(initHeight, newHeight, subText);
+            if (newHeight > initHeight) {
+                max = mid - 1;
+                ellipsis = true;
+            } else {
+                min = mid + 1;
+                var newText = subText;
+            }
+        }
+        if (ellipsis) {
+            $this.text(newText);
+        } else {
+            $this.text(text);
+        }
+        
     });
 });
