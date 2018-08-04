@@ -1,3 +1,4 @@
+// random function returns an integer from "fromInt" to "toInt"
 function rand(fromInt, toInt) {
     var range = toInt - fromInt + 1;
     return parseInt(Math.random() * range + fromInt);
@@ -40,33 +41,33 @@ $(document).ready(function() {
         start = 0; // DEBUG
         end = len - 1; // DEBUG
         */
-        var sub = words.slice(start, end);
+        var sub = words.slice(start, end); // get a slice of words array
         var text = sub.join(' ');
         var min = 0;
         var max = sub.length - 1;
-        $hidden.innerWidth(initWidth);
-        $hidden.css({'font-size': fontSize});
-        $hidden.css({'font-family': fontFamily});
+        $hidden.innerWidth(initWidth); // the hidden div is given a fixed width but not height, so it can change its height based on the text
+        $hidden.css({'font-size': fontSize}); // set to same font-size as target div
+        $hidden.css({'font-family': fontFamily}); // set to same font-family as target div
         var ellipsis = false;
         while (min <= max) {
             var mid = (min + max) >> 1;
             var subSub = sub.slice(0, mid);
-            var subText = subSub.join(' ') + ' ...';
+            var subText = subSub.join(' ') + ' ...'; // include the ellipsis in the height test
             $hidden.text(subText);
             var newHeight = $hidden.innerHeight();
             console.log(initHeight, newHeight, subText);
             if (newHeight > initHeight) {
                 max = mid - 1;
-                ellipsis = true;
+                ellipsis = true; // text will be cropped and needs an ellipsis
             } else {
                 min = mid + 1;
-                var newText = subText;
+                var newText = subText; // keep the last sentence that fit
             }
         }
         if (ellipsis) {
             $this.text(newText);
         } else {
-            $this.text(text);
+            $this.text(text); // if not ellipsis needed, use the original text
         }
         
     });
