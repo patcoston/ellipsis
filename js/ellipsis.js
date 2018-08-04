@@ -50,7 +50,7 @@ $(document).ready(function() {
         $hidden.css({'font-family': fontFamily}); // set to same font-family as target div
         var ellipsis = false;
         while (min <= max) {
-            var mid = (min + max) >> 1;
+            var mid = (min + max) >> 1; // bit shift right one bit is the same as integer divide by 2
             var subSub = sub.slice(0, mid);
             var subText = subSub.join(' ') + ' ...'; // include the ellipsis in the height test
             $hidden.text(subText);
