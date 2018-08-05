@@ -29,9 +29,7 @@ $(document).ready(function() {
         $this.css({'font-size': fs});
         $this.css({'font-family': fontName});
     });
-    var start = 0;
-    var end = len - 1;
-    var sub = words.slice(start, end); // get a slice of words array
+    var sub = words.slice(0, len); // get a slice of words array
     var fullText = sub.join(' ');
     $content.each(function() {
         var $this = $(this);
